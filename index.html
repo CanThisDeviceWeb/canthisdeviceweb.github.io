@@ -1,0 +1,23 @@
+<body>
+    <h1>Can This Device Web?</h1>
+    <p>Let's find out!</p>
+    <a href="#" id="loadJS">JavaScript</a>
+
+    <script>
+     document.getElementById("loadJS").addEventListener("click", function(e) {
+     e.preventDefault(); // verhindert, dass der Link die Seite neu lädt
+
+     // Neues Script-Tag erstellen
+     let script = document.createElement("script");
+     script.src = "js.js"; // externe Datei
+     script.type = "text/javascript";
+
+     // Script zum Dokument hinzufügen, damit es ausgeführt wird
+     document.body.appendChild(script);
+     });
+    </script>
+    <a href="CSS.html">CSS</a>
+
+    <a href="react.html">react</a>
+
+</body>
