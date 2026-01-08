@@ -1,4 +1,9 @@
 <body>
+    
+    <script async src="https://cdn.jsdelivr.net/pyodide/v0.23.4/slim/pyodide.js" onload="initPyodide()"></script>
+
+
+
     <h1>Can This Device Web?</h1>
     <p>Let's find out!</p>
     <a href="#" id="loadJS">JavaScript</a>
@@ -17,7 +22,66 @@
      });
     </script>
     <a href="CSS.html">CSS</a>
+     
+    <a href="#" id="loadJSX">React</a>
+    <script>
+     document.getElementById("loadJSX").addEventListener("click", function(e) {
+     e.preventDefault(); // verhindert, dass der Link die Seite neu lädt
 
-    <a href="react.html">react</a>
+     // Neues Script-Tag erstellen
+     let script = document.createElement("script");
+     script.src = "React.jsx"; // externe Datei
+     script.type = "text/JavaScript";
 
+     // Script zum Dokument hinzufügen, damit es ausgeführt wird
+     document.body.appendChild(script);
+     });
+    </script>
+    
+    <a href="#" id="loadTSX">TypeScript React</a>
+    <script>
+     document.getElementById("loadTSX").addEventListener("click", function(e) {
+     e.preventDefault(); // verhindert, dass der Link die Seite neu lädt
+
+     // Neues Script-Tag erstellen
+     let script = document.createElement("script");
+     script.src = "TSReact.tsx"; // externe Datei
+     script.type = "text/JavaScript";
+
+     // Script zum Dokument hinzufügen, damit es ausgeführt wird
+     document.body.appendChild(script);
+     });
+    </script>
+
+    <a href="#" id="Python">Python</a>
+
+    <script>
+    // Wait for Pyodide to be available
+async function waitForPyodide() {
+    while (typeof loadPyodide === 'undefined') {
+        await new Promise(r => setTimeout(r, 100));
+    }
+    return await loadPyodide();
+}
+
+let pyodideReady = waitForPyodide();
+
+document.getElementById("Python").addEventListener("click", async function(e) {
+    e.preventDefault();
+    let pyodide = await pyodideReady;
+    document.body.innerHTML += "<p>Loading Python (first time only)...</p>";
+    
+    // Fetch the Python file
+     let response = await fetch("Python.py");
+     let pythonCode = await response.text();
+    
+     // Run the Python code from the file
+     pyodide.runPython(pythonCode);
+    
+     // Get the result and display it
+     let result = pyodide.globals.get("html_content");
+     document.body.innerHTML += result;
+     });
+    </script>
+    
 </body>

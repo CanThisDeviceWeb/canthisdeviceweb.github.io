@@ -1,4 +1,4 @@
 alert("JavaScript Is WORKING!")
 console.log("JavaScript Is WORKING!")
-method = "JavaScript Is WORKING!"
-document.write(method)
+document.body.style.backgroundColor = "#fbff05ff"
+document.body.innerHTML += "<h2>JavaScript is working!</h2>"
