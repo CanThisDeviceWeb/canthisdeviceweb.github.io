@@ -1,6 +1,6 @@
 <body>
     
-    <script async src="https://cdn.jsdelivr.net/pyodide/v0.23.4/slim/pyodide.js" onload="initPyodide()"></script>
+    <script async src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js" onload="initPyodide()"></script>
 
 
 
@@ -56,32 +56,43 @@
     <a href="#" id="Python">Python</a>
 
     <script>
-    // Wait for Pyodide to be available
-async function waitForPyodide() {
-    while (typeof loadPyodide === 'undefined') {
-        await new Promise(r => setTimeout(r, 100));
+    let pyodideReady = null;
+
+    function initPyodide() {
+        console.log("Initializing Pyodide...");
+        pyodideReady = loadPyodide();
     }
-    return await loadPyodide();
-}
 
-let pyodideReady = waitForPyodide();
-
-document.getElementById("Python").addEventListener("click", async function(e) {
-    e.preventDefault();
-    let pyodide = await pyodideReady;
-    document.body.innerHTML += "<p>Loading Python (first time only)...</p>";
-    
-    // Fetch the Python file
-     let response = await fetch("Python.py");
-     let pythonCode = await response.text();
-    
-     // Run the Python code from the file
-     pyodide.runPython(pythonCode);
-    
-     // Get the result and display it
-     let result = pyodide.globals.get("html_content");
-     document.body.innerHTML += result;
-     });
+    document.getElementById("Python").addEventListener("click", async function(e) {
+        e.preventDefault();
+        
+        try {
+            console.log("Python button clicked");
+            if (!pyodideReady) {
+                alert("Pyodide is loading, please wait...");
+                return;
+            }
+            
+            document.body.innerHTML += "<p>Executing Python code...</p>";
+            let pyodide = await pyodideReady;
+            console.log("Pyodide ready");
+            
+            let response = await fetch("Python.py");
+            let pythonCode = await response.text();
+            console.log("Python code:", pythonCode);
+            
+            pyodide.runPython(pythonCode);
+            
+            let result = pyodide.globals.get("html_content");
+            console.log("Result:", result);
+            document.body.innerHTML += result;
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error: " + error.message);
+        }
+    });
     </script>
+
+    <a href="testvideo.mp4">Video Test</a>
     
 </body>
